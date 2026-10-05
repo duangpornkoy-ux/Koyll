@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AR กระต่ายกับเต่า - Hiro Marker</title>
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    #panel {
+      position: fixed;
+      z-index: 9999;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      width: min(94%, 430px);
+      padding: 15px;
+      border-radius: 20px;
+      background: rgba(0,0,0,.78);
+      color: white;
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    #title {
+      font-size: 21px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    #mode {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      min-width: 95px;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 13px;
+      background: white;
+      color: #222;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    button:active {
+      transform: scale(.94);
+    }
+
+    #status {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #baffba;
+    }
+  </style>
+</head>
+
+<body>
+
+<a-scene
+  embedded
+  vr-mode-ui="enabled: false"
+  renderer="logarithmicDepthBuffer: true; colorManagement: true"
+  arjs="sourceType: webcam; debugUIEnabled: false;">
+
+  <a-entity light="type: ambient; intensity: 1.5"></a-entity>
+  <a-entity light="type: directional; intensity: 2" position="2 4 3"></a-entity>
+
+  <!-- HIRO MARKER -->
+  <a-marker id="hiroMarker" preset="hiro">
+
+    <!-- พื้น -->
+    <a-plane
+      position="0 0.01 0"
+      rotation="-90 0 0"
+      width="3.8"
+      height="2.2"
+      color="#7fb069">
+    </a-plane>
+
+    <!-- เส้นทางการแข่งขัน -->
+    <a-plane
+      position="0 0.02 0"
+      rotation="-90 0 0"
+      width="3.3"
+      height=".65"
+      color="#d9c27e">
+    </a-plane>
+
+    <!-- ============================= -->
+    <!-- กระต่าย -->
+    <!-- ============================= -->
+
+    <a-entity id="rabbit" position="-1.25 0 0">
+
+      <!-- ตัว -->
+      <a-sphere
+        position="0 .65 0"
+        scale=".42 .5 .35"
+        color="#eeeeee">
+      </a-sphere>
+
+      <!-- หัว -->
+      <a-sphere
+        position="0 .98 .02"
+        radius=".32"
+        color="#f5f5f5">
+      </a-sphere>
+
+      <!-- หู -->
+      <a-entity id="rabbitEarL" position="-.13 1.27 0">
+        <a-sphere
+          scale=".10 .34 .10"
+          color="#f5f5f5">
+        </a-sphere>
+        <a-sphere
+          position="0 0 .08"
+          scale=".055 .25 .035"
+          color="#ffb6c1">
+        </a-sphere>
+      </a-entity>
+
+      <a-entity id="rabbitEarR" position=".13 1.27 0">
+        <a-sphere
+          scale=".10 .34 .10"
+          color="#f5f5f5">
+        </a-sphere>
+        <a-sphere
+          position="0 0 .08"
+          scale=".055 .25 .035"
+          color="#ffb6c1">
+        </a-sphere>
+      </a-entity>
+
+      <!-- ตา -->
+      <a-sphere position="-.12 1.04 .29" radius=".045" color="#111"></a-sphere>
+      <a-sphere position=".12 1.04 .29" radius=".045" color="#111"></a-sphere>
+
+      <!-- จมูก -->
+      <a-sphere position="0 .96 .32" radius=".045" color="#ff8fa3"></a-sphere>
+
+      <!-- ขา -->
+      <a-cylinder id="rabbitLeg1"
+        position="-.18 .30 .05"
+        radius=".09"
+        height=".42"
+        color="#eeeeee">
+      </a-cylinder>
+
+      <a-cylinder id="rabbitLeg2"
+        position=".18 .30 .05"
+        radius=".09"
+        height=".42"
+        color="#eeeeee">
+      </a-cylinder>
+
+      <!-- หาง -->
+      <a-sphere
+        position="0 .68 -.34"
+        radius=".15"
+        color="#ffffff">
+      </a-sphere>
+
+    </a-entity>
+
+
+    <!-- ============================= -->
+    <!-- เต่า -->
+    <!-- ============================= -->
+
+    <a-entity id="turtle" position="1.25 0 0">
+
+      <!-- กระดอง -->
+      <a-sphere
+        position="0 .48 0"
+        scale=".58 .30 .43"
+        color="#4d8b45">
+      </a-sphere>
+
+      <!-- ลายกระดอง -->
+      <a-ring
+        position="0 .70 .03"
+        rotation="90 0 0"
+        radius-inner=".16"
+        radius-outer=".23"
+        color="#315d2d">
+      </a-ring>
+
+      <!-- หัว -->
+      <a-sphere
+        position="0 .55 .45"
+        radius=".20"
+        color="#70a85c">
+      </a-sphere>
+
+      <!-- ตา -->
+      <a-sphere position="-.07 .61 .61" radius=".035" color="#111"></a-sphere>
+      <a-sphere position=".07 .61 .61" radius=".035" color="#111"></a-sphere>
+
+      <!-- ขา -->
+      <a-cylinder id="turtleLeg1"
+        position="-.42 .25 .20"
+        rotation="0 0 25"
+        radius=".10"
+        height=".35"
+        color="#70a85c">
+      </a-cylinder>
+
+      <a-cylinder id="turtleLeg2"
+        position=".42 .25 .20"
+        rotation="0 0 -25"
+        radius=".10"
+        height=".35"
+        color="#70a85c">
+      </a-cylinder>
+
+      <a-cylinder id="turtleLeg3"
+        position="-.42 .25 -.20"
+        rotation="0 0 25"
+        radius=".10"
+        height=".35"
+        color="#70a85c">
+      </a-cylinder>
+
+      <a-cylinder id="turtleLeg4"
+        position=".42 .25 -.20"
+        rotation="0 0 -25"
+        radius=".10"
+        height=".35"
+        color="#70a85c">
+      </a-cylinder>
+
+      <!-- หาง -->
+      <a-cone
+        position="0 .43 -.52"
+        radius-bottom=".12"
+        radius-top="0"
+        height=".28"
+        rotation="90 0 0"
+        color="#70a85c">
+      </a-cone>
+
+    </a-entity>
+
+    <!-- เส้นชัย -->
+    <a-box position="0 .12 -.35"
+      width=".08" height=".2" depth=".08"
+      color="white">
+    </a-box>
+
+    <a-box position="0 .12 .35"
+      width=".08" height=".2" depth=".08"
+      color="black">
+    </a-box>
+
+  </a-marker>
+
+  <a-entity camera></a-entity>
+</a-scene>
+
+
+<!-- ============================= -->
+<!-- CONTROL -->
+<!-- ============================= -->
+
+<div id="panel">
+
+  <div id="title">🐰 กระต่าย vs 🐢 เต่า</div>
+
+  <div id="mode">
+    โหมด: <strong id="modeText">หยุด</strong>
+  </div>
+
+  <div class="buttons">
+
+    <button onclick="walk()">
+      🚶 เดิน
+    </button>
+
+    <button onclick="run()">
+      🏃 วิ่ง
+    </button>
+
+    <button onclick="stopRace()">
+      ⏸ หยุด
+    </button>
+
+  </div>
+
+  <div id="status">
+    📷 ส่องกล้องไปที่ Hiro Marker
+  </div>
+
+</div>
+
+
+<script>
+
+  const rabbit = document.getElementById("rabbit");
+  const turtle = document.getElementById("turtle");
+
+  const modeText = document.getElementById("modeText");
+  const status = document.getElementById("status");
+
+  let running = false;
+  let speed = 0;
+  let rabbitX = -1.25;
+  let turtleX = 1.25;
+
+  /*
+   * กระต่ายและเต่าเดินไปตามแกน X
+   */
+  function animate() {
+
+    if (running) {
+
+      rabbitX += speed;
+      turtleX -= speed * 0.45;
+
+      /*
+       * เมื่อถึงขอบสนาม ให้กลับทิศ
+       */
+      if (rabbitX > 1.25) {
+        rabbitX = 1.25;
+        speed = -Math.abs(speed);
+      }
+
+      if (rabbitX < -1.25) {
+        rabbitX = -1.25;
+        speed = Math.abs(speed);
+      }
+
+      if (turtleX < -1.25) {
+        turtleX = -1.25;
+      }
+
+      if (turtleX > 1.25) {
+        turtleX = 1.25;
+      }
+
+      rabbit.setAttribute(
+        "position",
+        `${rabbitX} 0 0`
+      );
+
+      turtle.setAttribute(
+        "position",
+        `${turtleX} 0 0`
+      );
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+
+  /*
+   * เดิน
+   */
+  function walk() {
+
+    running = true;
+    speed = 0.004;
+
+    modeText.innerText = "เดิน 🚶";
+    status.innerHTML = "🐰 กระต่ายและ 🐢 เต่ากำลังเดิน";
+
+    animateLegs();
+  }
+
+
+  /*
+   * วิ่ง
+   */
+  function run() {
+
+    running = true;
+    speed = 0.012;
+
+    modeText.innerText = "วิ่ง 🏃";
+    status.innerHTML = "🏁 กระต่ายกำลังวิ่งแข่งกับเต่า!";
+
+    animateLegs();
+  }
+
+
+  /*
+   * หยุด
+   */
+  function stopRace() {
+
+    running = false;
+    speed = 0;
+
+    modeText.innerText = "หยุด ⏸";
+    status.innerHTML = "⏸ การแข่งขันหยุดแล้ว";
+  }
+
+
+  /*
+   * ทำให้ขากระต่าย/เต่าขยับ
+   */
+  let legAngle = 0;
+
+  function animateLegs() {
+
+    if (!running) return;
+
+    legAngle += speed * 120;
+
+    const rabbitLeg1 = document.getElementById("rabbitLeg1");
+    const rabbitLeg2 = document.getElementById("rabbitLeg2");
+
+    const turtleLeg1 = document.getElementById("turtleLeg1");
+    const turtleLeg2 = document.getElementById("turtleLeg2");
+
+    rabbitLeg1.setAttribute(
+      "rotation",
+      `0 0 ${25 + Math.sin(legAngle) * 20}`
+    );
+
+    rabbitLeg2.setAttribute(
+      "rotation",
+      `0 0 ${-25 - Math.sin(legAngle) * 20}`
+    );
+
+    turtleLeg1.setAttribute(
+      "rotation",
+      `0 0 ${25 + Math.sin(legAngle) * 12}`
+    );
+
+    turtleLeg2.setAttribute(
+      "rotation",
+      `0 0 ${-25 - Math.sin(legAngle) * 12}`
+    );
+
+    requestAnimationFrame(animateLegs);
+  }
+
+
+  /*
+   * ตรวจพบ Hiro Marker
+   */
+  const marker = document.getElementById("hiroMarker");
+
+  marker.addEventListener("markerFound", function() {
+
+    status.innerHTML =
+      "✅ พบ Hiro Marker — กระต่ายกับเต่าพร้อมแล้ว!";
+
+  });
+
+
+  /*
+   * Marker หาย
+   */
+  marker.addEventListener("markerLost", function() {
+
+    status.innerHTML =
+      "📷 ไม่พบ Marker — กรุณาส่องกล้องไปที่ Hiro";
+
+  });
+
+</script>
+
+</body>
+</html>
